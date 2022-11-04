@@ -25,6 +25,8 @@ Console.WriteLine("Hello, World!");
 
 Biblioteca myBiblioteca = new Biblioteca();
 myBiblioteca.StampaUtenti();
+myBiblioteca.StampaLibri();
+myBiblioteca.StampaDVDs();
 
 public class Utente
 {
@@ -49,12 +51,13 @@ public class Documento
     public string Titolo { get; set; }
     public int Anno { get; set; }
     public string Settore { get; set; }
-    public string Stato { get; set; }
-    public string Scaffale { get; set; }
+    public bool Stato { get; set; }
+    public int Scaffale { get; set; }
     public string Autore { get; set; }
 
+
     //costruttore
-    public Documento(string titolo, int anno, string settore, string stato, string scaffale, string autore)
+    public Documento(string titolo, int anno, string settore, bool stato, int scaffale, string autore)
     {
         Titolo = titolo;
         Anno = anno;
@@ -72,7 +75,7 @@ public class Libro : Documento
     public int Pagine { get; set; }
 
     //costruttore
-    public Libro(string titolo, int anno, string settore, string stato, string scaffale, string autore, string isbn, int pagine) : base(titolo, anno, settore, stato, scaffale, autore)
+    public Libro(string titolo, int anno, string settore, bool stato, int scaffale, string autore, string isbn, int pagine) : base(titolo, anno, settore, stato, scaffale, autore)
     {
         ISBN = isbn;
         Pagine = pagine;
@@ -86,7 +89,7 @@ public class DVD : Documento
     public int Durata { get; set; }
 
     //costruttore
-    public DVD(string titolo, int anno, string settore, string stato, string scaffale, string autore, string numSeriale, int durata) : base (titolo, anno, settore, stato, scaffale, autore)
+    public DVD(string titolo, int anno, string settore, bool stato, int scaffale, string autore, string numSeriale, int durata) : base (titolo, anno, settore, stato, scaffale, autore)
     {
         NumSeriale = numSeriale;
         Durata = durata;
@@ -96,13 +99,26 @@ public class DVD : Documento
 public class Biblioteca
 {
     public List<Utente> Utenti { get; set; }
+    public List<Libro> Libri { get; set; }
+    public List<DVD> DVDs { get; set; }
 
     public Biblioteca()
     {
+        //creazione utenti
         Utenti = new List<Utente>();
         Utente utente1 = new Utente("Ficini", "Sandro", "sandro@email.com", 323445454);
         Utenti.Add(utente1);
         Utenti.Add(new Utente("Chicco", "Oca", "oca@email.com", 323368454));
+
+        //creazione libri
+        Libri = new List<Libro>();
+        Libri.Add(new Libro("Chicco", 2022, "natura", true, 20, "Sandro", "4302890", 100));
+        Libri.Add(new Libro("Grisea", 2021, "natura", false, 15, "Sandra", "3477890", 150));
+
+        //creazione DVDs
+        DVDs = new List<DVD>();
+        DVDs.Add(new DVD("abcd", 1988, "politica", true, 50, "Genoveffa", "159357", 60));
+        DVDs.Add(new DVD("efgh", 1999, "documentario", false, 48, "Lorenzo", "3478519", 120));
     }
 
     public void StampaUtenti()
@@ -114,6 +130,38 @@ public class Biblioteca
             Console.WriteLine(utente.Nome);
             Console.WriteLine(utente.Email);
             Console.WriteLine(utente.Telefono);
+            Console.WriteLine("--------------");
+        }
+    }
+    public void StampaLibri()
+    {
+        Console.WriteLine("I libri in archivio sono: ");
+        foreach (Libro libro in Libri)
+        {
+            Console.WriteLine(libro.Titolo);
+            Console.WriteLine(libro.Anno);
+            Console.WriteLine(libro.Settore);
+            Console.WriteLine(libro.Stato);
+            Console.WriteLine(libro.Scaffale);
+            Console.WriteLine(libro.Autore);
+            Console.WriteLine(libro.ISBN);
+            Console.WriteLine(libro.Pagine);
+            Console.WriteLine("--------------");
+        }
+    }
+    public void StampaDVDs()
+    {
+        Console.WriteLine("I DVDs in archivio sono: ");
+        foreach (DVD dvd in DVDs)
+        {
+            Console.WriteLine(dvd.Titolo);
+            Console.WriteLine(dvd.Anno);
+            Console.WriteLine(dvd.Settore);
+            Console.WriteLine(dvd.Stato);
+            Console.WriteLine(dvd.Scaffale);
+            Console.WriteLine(dvd.Autore);
+            Console.WriteLine(dvd.NumSeriale);
+            Console.WriteLine(dvd.Durata);
             Console.WriteLine("--------------");
         }
     }
