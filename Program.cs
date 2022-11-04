@@ -23,6 +23,9 @@ Console.WriteLine("Hello, World!");
 //Mi raccomando, prima di buttarvi sul codice fate qualche schema per capire le entità principali e le loro relazioni / eredità.
 //Buon lavoro! (modificato) 
 
+Biblioteca myBiblioteca = new Biblioteca();
+myBiblioteca.StampaUtenti();
+
 public class Utente
 {
     //props
@@ -92,5 +95,27 @@ public class DVD : Documento
 
 public class Biblioteca
 {
+    public List<Utente> Utenti { get; set; }
+
+    public Biblioteca()
+    {
+        Utenti = new List<Utente>();
+        Utente utente1 = new Utente("Ficini", "Sandro", "sandro@email.com", 323445454);
+        Utenti.Add(utente1);
+        Utenti.Add(new Utente("Chicco", "Oca", "oca@email.com", 323368454));
+    }
+
+    public void StampaUtenti()
+    {
+        Console.WriteLine("Gli utenti: ");
+        foreach(Utente utente in Utenti)
+        {
+            Console.WriteLine(utente.Cognome);
+            Console.WriteLine(utente.Nome);
+            Console.WriteLine(utente.Email);
+            Console.WriteLine(utente.Telefono);
+            Console.WriteLine("--------------");
+        }
+    }
 
 }
