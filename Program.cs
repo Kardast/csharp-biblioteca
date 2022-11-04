@@ -1,5 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using System.Runtime.ConstrainedExecution;
+using System.Security.Cryptography.X509Certificates;
 
 Console.WriteLine("Hello, World!");
 
@@ -27,74 +28,7 @@ Biblioteca myBiblioteca = new Biblioteca();
 myBiblioteca.StampaUtenti();
 myBiblioteca.StampaLibri();
 myBiblioteca.StampaDVDs();
-
-public class Utente
-{
-    //props
-    public string Cognome {get; set;}
-    public string Nome {get; set;}
-    public string Email { get; set;}
-    public int Telefono {get; set;}
-
-    //costruttore
-    public Utente(string cognome, string nome, string email, int telefono)
-    {
-        Cognome = cognome;
-        Nome = nome;
-        Email = email;
-        Telefono = telefono;
-    }
-}
-public class Documento
-{
-    //props
-    public string Titolo { get; set; }
-    public int Anno { get; set; }
-    public string Settore { get; set; }
-    public bool Stato { get; set; }
-    public int Scaffale { get; set; }
-    public string Autore { get; set; }
-
-
-    //costruttore
-    public Documento(string titolo, int anno, string settore, bool stato, int scaffale, string autore)
-    {
-        Titolo = titolo;
-        Anno = anno;
-        Settore = settore;
-        Stato = stato;
-        Scaffale = scaffale;
-        Autore = autore;
-    }
-
-}
-public class Libro : Documento
-{
-    //props
-    public string ISBN { get; set; }
-    public int Pagine { get; set; }
-
-    //costruttore
-    public Libro(string titolo, int anno, string settore, bool stato, int scaffale, string autore, string isbn, int pagine) : base(titolo, anno, settore, stato, scaffale, autore)
-    {
-        ISBN = isbn;
-        Pagine = pagine;
-    }
-}
-
-public class DVD : Documento
-{
-    //props
-    public string NumSeriale { get; set; }
-    public int Durata { get; set; }
-
-    //costruttore
-    public DVD(string titolo, int anno, string settore, bool stato, int scaffale, string autore, string numSeriale, int durata) : base (titolo, anno, settore, stato, scaffale, autore)
-    {
-        NumSeriale = numSeriale;
-        Durata = durata;
-    }
-}
+myBiblioteca.RicercaDocumento();
 
 public class Biblioteca
 {
@@ -163,6 +97,33 @@ public class Biblioteca
             Console.WriteLine(dvd.NumSeriale);
             Console.WriteLine(dvd.Durata);
             Console.WriteLine("--------------");
+        }
+    }
+    public void RicercaDocumento()
+    {
+        Console.WriteLine("Vuoi cercare un libro o un dvd? [libro/dvd] ");
+        string userInput = Console.ReadLine();
+        if (userInput == "libro")
+        {
+            Console.WriteLine("Scrivi il codice o il titolo del libro da cercare: ");
+            string userInputLibro = Console.ReadLine();
+
+            foreach (Libro ricerca in Libri)
+            {
+                if (userInputLibro == ricerca.Titolo || userInputLibro == ricerca.ISBN)
+                {
+                    Console.WriteLine("Trovato libro: " + ricerca.Titolo);
+                }
+            }
+        }
+        else if (userInput == "dvd")
+        {
+
+        }
+        else
+        {
+            Console.WriteLine("inserisci un valore corretto");
+            RicercaDocumento();
         }
     }
 
