@@ -30,11 +30,6 @@ Biblioteca myBiblioteca = new Biblioteca();
 //myBiblioteca.StampaDVDs();
 myBiblioteca.RicercaDocumento();
 
-public class Prestito
-{
-
-}
-
 public class Biblioteca
 {
     public List<Utente> Utenti { get; set; }
@@ -48,19 +43,27 @@ public class Biblioteca
         Utente utente1 = new Utente("Ficini", "Sandro", "sandro@email.com", 323445454);
         Utenti.Add(utente1);
         Utenti.Add(new Utente("Chicco", "Oca", "oca@email.com", 323368454));
+        Utenti.Add(new Utente("Rossi", "Paolo", "paolorossi@gmail.com", 334303045));
+        Utenti.Add(new Utente("Arrigoni", "Luca", "lucaarrigoni@gmail.com", 334364045));
+        Utenti.Add(new Utente("Elia", "Federica", "federicaelia@gmail.com", 331324045));
 
         //creazione libri
         Libri = new List<Libro>();
-        Libri.Add(new Libro("Chicco", 2022, "natura", true, 20, "Sandro", "4302890", 100));
-        Libri.Add(new Libro("Grisea", 2021, "natura", false, 15, "Sandra", "3477890", 150));
-        Libri.Add(new Libro("Pepe", 2020, "natura", true, 15, "Sandra", "3477890", 160));
-
+        Libri.Add(new Libro("Chicco", 2022, "natura", true, 20, "Sandro", "9788804577032", 100));
+        Libri.Add(new Libro("Grisea", 2021, "natura", false, 15, "Sandra", "9788804577031", 150));
+        Libri.Add(new Libro("Pepe", 2020, "natura", true, 15, "Sandra", "9788804577030", 160));
+        Libri.Add(new Libro("La solitudine dei numeri primi", 2008, "Romanzo", true, new Random().Next(0, 101), "Paolo Giordano", "9788804577027", 304));
+        Libri.Add(new Libro("L'isola della paura", 2013, "Thriller psicologico", false, new Random().Next(0, 101), "Dennis Lehane", "9788868366216", 436));
+        Libri.Add(new Libro("Il silenzio degli innocenti", 1988, "Thriller psicologico", true, new Random().Next(0, 101), "Thomas Harris", "9788804333746", 388));
 
         //creazione DVDs
         DVDs = new List<DVD>();
         DVDs.Add(new DVD("abcd", 1988, "politica", true, 50, "Genoveffa", "159357", 60));
         DVDs.Add(new DVD("efgh", 1999, "documentario", false, 48, "Lorenzo", "3478519", 120));
         DVDs.Add(new DVD("ilmn", 1998, "documentario", true, 48, "Lorenzo", "3478519", 120));
+        DVDs.Add(new DVD("Avatar", 2008, "Fantascienza", true, new Random().Next(0, 101), "Paolo Giordano", "9788804577027", 304));
+        DVDs.Add(new DVD("Shutter Island", 2013, "Thriller psicologico", false, new Random().Next(0, 101), "Dennis Lehane", "9788868366216", 436));
+        DVDs.Add(new DVD("Il miglio verde", 1988, "Thriller psicologico", true, new Random().Next(0, 101), "Thomas Harris", "9788804333746", 388));
     }
 
     public void StampaUtenti()
@@ -109,21 +112,25 @@ public class Biblioteca
     }
     public void RicercaDocumento()
     {
+        //scelta del tipo documento
         Console.WriteLine("Vuoi cercare un libro o un dvd? [libro/dvd] ");
         string userInput = Console.ReadLine();
+
+        //if libro
         if (userInput == "libro")
         {
             Console.WriteLine("Scrivi il codice o il titolo del libro da cercare: ");
-            string userInputLibro = Console.ReadLine();
+            string userInputDoc = Console.ReadLine();
 
             foreach (Libro libro in Libri)
             {
-                if (userInputLibro == libro.Titolo || userInputLibro == libro.ISBN)
+                if (userInputDoc == libro.Titolo || userInputDoc == libro.ISBN)
                 {
                     if (libro.Stato == true)
                     {
 
                         Console.WriteLine("il libro ricercato è disponibile");
+                        EffettuaPrestito(userInputDoc);
                         break;
                     }
                     else
@@ -133,19 +140,21 @@ public class Biblioteca
                 }
             }
         }
+        //if dvd
         else if (userInput == "dvd")
         {
             Console.WriteLine("Scrivi il codice o il titolo del DVD da cercare: ");
-            string userInputDVD = Console.ReadLine();
+            string userInputDoc = Console.ReadLine();
 
             foreach (DVD dvd in DVDs)
             {
-                if (userInputDVD == dvd.Titolo || userInputDVD == dvd.NumSeriale)
+                if (userInputDoc == dvd.Titolo || userInputDoc == dvd.NumSeriale)
                 {
                     if(dvd.Stato == true)
                     {
 
                         Console.WriteLine("il DVD ricercato è disponibile");
+                        EffettuaPrestito(userInputDoc);
                         break;
                     }
                     else
@@ -162,5 +171,27 @@ public class Biblioteca
             RicercaDocumento();
         }
     }
-
+    public void EffettuaPrestito(string userInputDoc)
+    {
+        Console.WriteLine("Vuoi prenderlo in prestito? [si/no]");
+        string userDocPrestito = Console.ReadLine();
+        if(userDocPrestito == "si")
+        {
+            Console.WriteLine("Inserisci il tuo nome");
+            string userName = Console.ReadLine();
+            Console.WriteLine("Inserisci il tuo cognome");
+            string userSurname = Console.ReadLine();
+            Console.WriteLine("Inserisci la data di inizio prestito");
+            string startPrestito = Console.ReadLine();
+            Console.WriteLine("Inserisci la data di fine prestito");
+            string endPrestito = Console.ReadLine();
+            Prestito prestitoUno = new Prestito(userInputDoc, userName, userSurname, startPrestito, endPrestito);
+            Console.WriteLine("Hai effettuato il prestito di: " + prestitoUno.Nome + " dal: " + prestitoUno.DataPrestito + " al: " + prestitoUno.DataRestituzione);
+            Console.WriteLine("Utente: " + prestitoUno.NomeUtente + ", "+ prestitoUno.CognomeUtente);
+        }
+        else
+        {
+            RicercaDocumento();
+        }
+    }
 }
