@@ -29,12 +29,14 @@ Biblioteca myBiblioteca = new Biblioteca();
 //myBiblioteca.StampaLibri();
 //myBiblioteca.StampaDVDs();
 myBiblioteca.RicercaDocumento();
+myBiblioteca.RicercaPrestiti();
 
 public class Biblioteca
 {
     public List<Utente> Utenti { get; set; }
     public List<Libro> Libri { get; set; }
     public List<DVD> DVDs { get; set; }
+    public List<Prestito> Prestiti { get; }
 
     public Biblioteca()
     {
@@ -64,6 +66,12 @@ public class Biblioteca
         DVDs.Add(new DVD("Avatar", 2008, "Fantascienza", true, new Random().Next(0, 101), "Paolo Giordano", "9788804577027", 304));
         DVDs.Add(new DVD("Shutter Island", 2013, "Thriller psicologico", false, new Random().Next(0, 101), "Dennis Lehane", "9788868366216", 436));
         DVDs.Add(new DVD("Il miglio verde", 1988, "Thriller psicologico", true, new Random().Next(0, 101), "Thomas Harris", "9788804333746", 388));
+
+        //creazione prestiti
+        Prestiti = new List<Prestito>();
+        Prestiti.Add(new Prestito("Il silenzio degli innocenti", "Federica", "Elia", "05/11/22", "07/11/22"));
+        Prestiti.Add(new Prestito("Mannaggia buddha elettrico", "Federica", "Elia", "05/11/22", "07/11/22"));
+        Prestiti.Add(new Prestito("Shutter Island", "Sandro", "Ficini", "05/11/22", "07/11/22"));
     }
 
     public void StampaUtenti()
@@ -163,7 +171,6 @@ public class Biblioteca
                     }
                 }
             }
-
         }
         else
         {
@@ -188,10 +195,42 @@ public class Biblioteca
             Prestito prestitoUno = new Prestito(userInputDoc, userName, userSurname, startPrestito, endPrestito);
             Console.WriteLine("Hai effettuato il prestito di: " + prestitoUno.Nome + " dal: " + prestitoUno.DataPrestito + " al: " + prestitoUno.DataRestituzione);
             Console.WriteLine("Utente: " + prestitoUno.NomeUtente + ", "+ prestitoUno.CognomeUtente);
+            Prestiti.Add(prestitoUno);
         }
         else
         {
             RicercaDocumento();
+        }
+    }
+
+    public void RicercaPrestiti()
+    {
+        Console.WriteLine("Stai cercando i prestiti associati a quale utente? Inserire nome");
+        string inputPrestito = Console.ReadLine();
+        bool presente = false;
+        foreach (Prestito prestito in Prestiti)
+        {
+            if (inputPrestito == prestito.NomeUtente)
+            {
+                presente = true;
+            }
+
+        }
+        if (presente == true)
+        {
+            Console.WriteLine("I prestiti associati all'utente selezionato sono:");
+            foreach (Prestito prestito in Prestiti)
+            {
+                if(inputPrestito == prestito.NomeUtente)
+                {
+
+                    Console.WriteLine(prestito.Nome + ", in prestito dal: " + prestito.DataPrestito + " al: " + prestito.DataRestituzione);
+                }
+            }
+        }
+        else
+        {
+            Console.WriteLine("Non sono presenti prestiti associati all'utente richiesto");
         }
     }
 }
